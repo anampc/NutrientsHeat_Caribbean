@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/323421269.svg)](https://zenodo.org/badge/latestdoi/323421269)
 
 
-This repository contains data and data analysis scripts for the manuscript:
+This repository contains data and data analysis for the manuscript:
 
 ## Variation in susceptibility among three Caribbean coral species and their algal symbionts indicates the threatened *Acropora cervicornis* is particularly susceptible to elevated nutrients and heat stress
 #### Authors: Ana M. Palacio-Castro, Caroline E. Dennison, Stephanie M. Rosales, Andrew C. Baker
