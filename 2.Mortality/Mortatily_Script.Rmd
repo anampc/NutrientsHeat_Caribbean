@@ -1,0 +1,344 @@
+---
+title: "Coral survivorship under nutrients and heat stress"
+author: "Ana Palacio"
+date: "Nov 18, 2018"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    df_print: paged
+    fig_height: 7
+    fig_width: 8
+    toc: yes
+nocite: '@*'
+editor_options:
+  chunk_output_type: console
+bibliography: packages.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+# General project set-up 
+
+```{r libraries, results="hide"}
+
+# Load all libraries and sources required to run the script
+    library(tidyverse)
+    library(ggthemes)
+    library(survival)
+    library(survminer)
+
+# Default ggplot settings
+
+    Fill.colour<-c("black", "gray70", "gray35")
+
+    ggthe_bw<-theme(plot.background=element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          legend.box.background = element_rect(),
+          panel.background =element_rect(fill = NA, color = "black")
+          )+
+    theme_bw()
+  
+```
+
+# Acropora cervicornis
+
+## Import data
+
+```{r}
+# Acer data
+    Survival.data<-read.csv("Data/Acer_Mortality.csv", header = TRUE)
+    summary(Survival.data)
+    summary(Survival.data$Genotype)
+    Survival.data$Genotype<-factor(Survival.data$Genotype, 
+                                   levels=c("G_48", "G_62","G_31", "G_08","G_07", "G_50"))
+    summary(Survival.data$Genotype)
+```
+
+## Create survival object
+
+```{r}
+## Add survival object (Fit survival data using the Kaplan-Meier method)
+  surv_object <- Surv(time = Survival.data$Fu.time_texp, event = Survival.data$Fu.stat_exp)
+  surv_object 
+
+```
+
+## Nutrient treatment effect (A, N, N+P)
+
+### Figure 2 (1st panel)
+
+```{r}
+
+# Only treatment model
+    # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit1 <- survfit(surv_object ~ Treatment, data = Survival.data)
+    summary(fit1)
+    
+    #coxfitAc <- coxph(surv_object ~ Treatment, data = Survival.data)
+    #summary(coxfitAc)
+
+    # Plot the survival model
+    Ac_Treatment_Only<-ggsurvplot(fit1, data = Survival.data, pval = TRUE, 
+           conf.int = T, risk.table=T, palette=Fill.colour,
+           break.time.by=15, xlim=c(0,115), risk.table.y.text = FALSE,
+           risk.table.title="Number of fragments at risk") + ggtitle("A. cervicornis")
+    Ac_Treatment_Only
+    
+  Acer.Probabilities<-Ac_Treatment_Only$data.survplot
+
+```
+
+## Nutrient treatment effect (Compare N vs N+P)
+
+```{r}
+# Data
+    Survival.data2<-Survival.data[(Survival.data$Treatment!="Ambient"),]
+    summary(Survival.data2)
+    summary(Survival.data2$Genotype)
+    Survival.data2$Genotype<-factor(Survival.data2$Genotype, 
+                                   levels=c("G_48", "G_62","G_31", "G_08","G_07", "G_50"))
+    summary(Survival.data2$Genotype)
+    summary(Survival.data2$Treatment)
+    Survival.data2$Treatment<-factor(Survival.data2$Treatment, 
+                                   levels=c("N", "N_P"))
+```
+
+```{r}
+## Add survival object (Fit survival data using the Kaplan-Meier method)
+  surv_object2 <- Surv(time = Survival.data2$Fu.time_texp, 
+                       event = Survival.data2$Fu.stat_exp)
+  surv_object2 
+
+```
+
+```{r}
+# Only treatment model
+    # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit1_2 <- survfit(surv_object2 ~ Treatment, data = Survival.data2)
+    summary(fit1_2)
+    surv_pvalue(fit1_2)
+    
+    # Plot the survival model
+    N_NP_Only<-ggsurvplot(fit1_2, data = Survival.data2, pval = TRUE, 
+           conf.int = T, risk.table=T, palette=Fill.colour)
+    N_NP_Only
+
+```
+
+```{r}
+# Hazard ratio
+  fit.coxph1_2 <- coxph(surv_object2 ~ Treatment, data = Survival.data2)
+  ggforest(fit.coxph1_2, data = Survival.data2)
+  fit.coxph1_2
+```
+
+
+# Orbicella faveolata 
+
+## Import data
+
+```{r}
+# Data
+    Survival.Of.data<-read.csv("Data/Ofav_Mortality.csv", header = TRUE)
+
+    summary(Survival.Of.data)
+    Survival.Of.data$Genotype<-factor(Survival.Of.data$Colony, 
+                                      levels = c("Of_34", "Of_20", "Of_6", "Of_31"))
+    summary(Survival.Of.data$Genotype)
+```
+
+## Create survival object
+
+```{r}
+## Add survival object (Fit survival data using the Kaplan-Meier method)
+  surv_object_Of <- Surv(time = Survival.Of.data$Fu.time_texp, 
+                         event = Survival.Of.data$Fu.stat_exp)
+  surv_object_Of 
+```
+
+## Nutrient treatment effect (A, N, N+P)
+
+### Figure 2 (2nd panel)
+
+```{r}
+# Only treatment model
+   # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit2_Of <- survfit(surv_object_Of ~ Treatment, data = Survival.Of.data)
+    summary(fit2_Of)
+    
+   # Plot the survival model
+    Of_Treatment_Only<-ggsurvplot(fit2_Of, data = Survival.Of.data, pval = TRUE, 
+           conf.int = T, risk.table=T, palette=Fill.colour,
+           break.time.by=15, xlim=c(0,115), risk.table.y.text = FALSE,
+           risk.table.title="Number of fragments at risk") + ggtitle("O. faveolata") 
+    Of_Treatment_Only
+    
+    #ggsave("Outputs/Ofav_Surv_Treatment_Of.svg", 
+     #     Of_Treatment_Only$plot, width=4, height=3.5,dpi = 300)
+    #ggsave("Outputs/Fig_SX4_Surv_Treatment_Of.pdf", print(Treatment_Only),
+           #width=5, height=6,dpi = 300)
+```
+
+```{r}
+# Hazard ratio
+  fit.coxph1_3 <- coxph(surv_object_Of ~ Treatment, data = Survival.Of.data)
+  ggforest(fit.coxph1_3, data = Survival.Of.data)
+  fit.coxph1_3
+  summary(fit.coxph1_3)
+```
+
+### Colony effect (Figure S4)
+
+```{r}
+# Only genotype model
+  # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit3_Of <- survfit(surv_object_Of ~ Genotype, conf.type = "log-log", 
+                    data = Survival.Of.data)
+    summary(fit3_Of)
+  # Plot the survival model
+    Genotype_only_OF<-ggsurvplot(fit3_Of, data = Survival.Of.data, pval = TRUE,
+               risk.table=T, tables.height=0.4, conf.int = T, n.risk   = TRUE )
+    Genotype_only_OF
+    
+    Ofav.Probabilities<-Genotype_only_OF$data.survplot
+
+# Treatment and genotype model 1 
+    # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit4_Of <- survfit(surv_object_Of ~ Genotype + Treatment, data = Survival.Of.data)
+    summary(fit4_Of)
+
+    ggsurvplot_facet(fit4_Of, data = Survival.Of.data, facet.by="Genotype",
+                     #risk.table=T, tables.height=0.5,
+                 nrow = 4, alpha=1,
+                 palette=Fill.colour, linetype=1)
+
+
+    Ofav_PLot<- ggsurvplot_facet(fit4_Of, data = Survival.Of.data, 
+                 facet.by="Treatment", 
+                 # risk.table=T, tables.height=0.5, 
+                 nrow = 3, alpha=0.5, conf.int = T,
+                 linetype=1)+theme(legend.position = "left")
+    Ofav_PLot
+    
+```
+
+
+# Siderastrea siderea 
+
+## Import data
+
+```{r}
+# Data
+    Survival.Ss.data<-read.csv("Data/Ssid_Mortality.csv", header = TRUE)
+    summary(Survival.Ss.data)
+    Survival.Ss.data$Genotype<-factor(Survival.Ss.data$Colony, levels = c(
+      "Ss_22", "Ss_23", "Ss_27", "Ss_28", "Ss_24", "Ss_30", "Ss_20"))
+    summary(Survival.Ss.data$Genotype)
+```
+
+## Create survival object
+
+```{r}
+## Add survival object (Fit survival data using the Kaplan-Meier method)
+  surv_object_SS <- Surv(time = Survival.Ss.data$Fu.time_texp, 
+                         event = Survival.Ss.data$Fu.stat_exp)
+  surv_object_SS 
+
+```
+
+## Nutrient treatment effect (A, N, N+P)
+
+### Figure 2 (3rd panel)
+
+```{r}
+# Only treatment model
+    # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit5Ss <- survfit(surv_object_SS ~ Treatment, data = Survival.Ss.data)
+    summary(fit5Ss)
+    
+    coxfitSs <- coxph(surv_object_SS ~ Treatment, data = Survival.Ss.data)
+    summary(coxfitSs)
+
+    # Plot the survival model
+    Ss_Treatment_Only<-ggsurvplot(fit5Ss, data = Survival.Ss.data, pval = TRUE, 
+           conf.int = T, risk.table=T, palette=Fill.colour,
+           break.time.by=15, xlim=c(0,115), risk.table.y.text = FALSE,
+           risk.table.title="Number of fragments at risk") + ggtitle("S. siderea") 
+    Ss_Treatment_Only
+    #ggsave("Outputs/Fig_Ssid_Surv_Treatment.svg", 
+           #Ss_Treatment_Only$plot, width=4, height=3.5,dpi = 300)
+
+```
+
+### Colony effect
+
+```{r}
+
+# Only genotype model
+  # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit6Ss <- survfit(surv_object_SS ~ Genotype, conf.type = "log-log",
+                      data = Survival.Ss.data)
+    summary(fit6Ss)
+  # Plot the survival model
+    Genotype_only_SS<-ggsurvplot(fit6Ss, data = Survival.Ss.data, pval = TRUE,
+               risk.table=T, tables.height=0.4, conf.int = T, n.risk   = TRUE )
+    Genotype_only_SS
+
+        
+# Treatment and genotype model 1 
+    # Kaplan-Meier estimator. The "log-log" confidence interval is preferred.
+    fit7Ss <- survfit(surv_object_SS ~ Genotype + Treatment, data = Survival.Ss.data)
+    summary(fit7Ss)
+    # Plot the survival model
+    Ssid_PLot<-ggsurvplot_facet(fit7Ss, data = Survival.Ss.data, 
+                 facet.by="Treatment", 
+                 # risk.table=T, tables.height=0.5, 
+                 nrow = 3, alpha=0.5, conf.int = T,
+                 linetype=1) +theme(legend.position = "left")
+    Ssid_PLot
+```
+
+# Figure 2: All Spp treatment plot
+
+```{r}
+Survival.Trat.plot<-ggarrange(Ac_Treatment_Only$plot,
+                              Of_Treatment_Only$plot, 
+                              Ss_Treatment_Only$plot, 
+                              Ac_Treatment_Only$table, 
+                              Of_Treatment_Only$table, 
+                              Ss_Treatment_Only$table,
+                              heights = c(2, 0.7),
+                              ncol = 3, nrow = 2)
+Survival.Trat.plot
+
+ggsave(file="Outputs/Survival.Treat.plot.svg", plot=Survival.Trat.plot, width=7.5, height=6)
+```
+
+
+# Supplementary plots by colonies (Simbiont communities)
+
+```{r}
+SuplementatySurvivalA<-ggarrange(Genotype_only_OF$plot,Genotype_only_SS$plot,
+                                 Genotype_only_OF$table ,Genotype_only_SS$table,
+                                 labels = c("O. faveolata", "S.siderea"),
+                                 ncol = 2, nrow = 2)
+SuplementatySurvivalA
+
+SuplementatySurvivalB<-ggarrange(Ofav_PLot, Ssid_PLot, labels = c("O. faveolata", "S.siderea"),
+          ncol = 2, nrow = 1)
+SuplementatySurvivalB
+
+```
+
+# Packages used
+
+```{r}
+# Creates bibliography 
+#knitr::write_bib(c(.packages()), "packages.bib")
+```

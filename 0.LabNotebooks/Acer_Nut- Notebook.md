@@ -70,7 +70,7 @@ output:
 
 * Rapid tissue necrosis in many fragments 
 
-|    Genotype    | Control | N| NP| Dead |    | 
+|    Genotype    | Control | N| NP| Dead | 
 |------------------ |----|----|----|----| 
 | Green             | 10 | 9  | 9  | 2  | 
 | Green and Orange | 10 | 10 | 9  | 2  | 
@@ -158,6 +158,7 @@ output:
 * Cleaned all fragments
 
 ----------
+
 ## Oct 10, 2017
 
 ### IPAM 2 for Acer and Pictures w color scale
@@ -430,6 +431,7 @@ output:
 
 ### New Stock 2 of nutrients 
 * AP
+
 ----------
 
 ## Dec 18, 2017
@@ -440,7 +442,7 @@ output:
 
 ----------
 
-}
+
 
 ## Dec 19, 2017
 
@@ -572,7 +574,6 @@ output:
 
 ### Acer (Dec) qPCR with A and Acer
 * CD
-* 
 
 ### Cleaned corals + vertical rotation
 * CD and SD
@@ -661,7 +662,7 @@ Se
 * Corals in control(both replicates) had mesenterial filaments out
 * Another coral in Nitrogen R2 is showing signs of tissue loss
 
-##· Temperature and Salinity measurements taken using YSI from Langdon Lab
+### Temperature and Salinity measurements taken using YSI from Langdon Lab
 * Control
 ** R1: 26.1, 37.2 R2: 26.3, 36.9
 * Nitrogen
@@ -1469,7 +1470,6 @@ Samples: 284, 217, 102, 231, 187, 120, 232, 234, 188, 128, 104, 233
 
 ### PCR cleanup and qubit
 
-* 
 
 
 
