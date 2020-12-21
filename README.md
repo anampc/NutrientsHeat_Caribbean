@@ -1,4 +1,5 @@
-[![DOI](https://zenodo.org/badge/doi/XXXX.svg)](http://dx.doi.org/XXXXXXX)
+[![DOI](https://zenodo.org/badge/323421269.svg)](https://zenodo.org/badge/latestdoi/323421269)
+
 
 This repository contains data and data analysis scripts for the manuscript:
 
