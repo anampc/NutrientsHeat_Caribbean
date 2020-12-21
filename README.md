@@ -18,7 +18,7 @@ We aimed to compare the effects of these combined stressors on coral survivorshi
 
 </br>
 
-### Repositoty content:
+### Repository content:
 
 #### 0.LabNotebooks:
 
@@ -35,7 +35,7 @@ Contains daily note entries during the experiment
 
 Contains raw mortality data and code for **Figure 2**
 
-* **Mortatily_Script.Rmd:** code for survivirship analysis and **Figure 2**
+* **Mortatily_Script.Rmd:** code for survivorship analysis and **Figure 2**
 * Data/**Acer_Mortality.csv:** Raw mortality data for *A. cervicornis*
 * Data/**Ofav_Mortality.csv:** Raw mortality data for *O. faveolata*
 * Data/**Ssid_Mortality.csv:** Raw mortality data for *S. siderea*
