@@ -32,7 +32,7 @@ Contains daily note entries during the experiment
 #### [1.Temperature](https://ghcdn.rawgit.org/anampc/NutrientsHeat_Caribbean/main/1.Temperature/Temperature.html):
 * Contains raw temperature data (Day_Tem.csv) and code (Temperature.Rmd) for **Figure 1**
 
-#### 2.Mortality:
+#### [2.Mortality](https://ghcdn.rawgit.org/anampc/NutrientsHeat_Caribbean/main/2.Mortality/Mortality_Script.html):
 
 Contains raw mortality data and code for **Figure 2**
 
@@ -41,7 +41,7 @@ Contains raw mortality data and code for **Figure 2**
 * Data/**Ofav_Mortality.csv:** Raw mortality data for *O. faveolata*
 * Data/**Ssid_Mortality.csv:** Raw mortality data for *S. siderea*
 
-#### 3.YII:
+#### [3.YII](https://ghcdn.rawgit.org/anampc/NutrientsHeat_Caribbean/main/3.YII/YII_Script.html):
 * Contains raw photochemical efficiency (*F~v~/F~m~*) data and code for **Figure 3**
 
 * **YII_Script.Rmd:** code for *F~v~/F~m~* analysis and **Figure 3**
@@ -49,7 +49,7 @@ Contains raw mortality data and code for **Figure 2**
 * YII_Data/**All_YII_data.csv:** YII values for all coral species
 
 
-#### 4.Chla_Sym2:
+#### [4.Chla_Sym2](https://ghcdn.rawgit.org/anampc/NutrientsHeat_Caribbean/main/4.Chla_Sym2/Blasting.html):
 
 Contains raw values of Chlorophyll-*a* and Symbiodiniaceae cell counts, as well as  code for **Figure 4 and 5**
 
