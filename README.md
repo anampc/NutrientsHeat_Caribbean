@@ -9,7 +9,7 @@ This repository contains data and data analysis for the manuscript:
 #### Journal: _Coral Reefs_ [doi:XXX](http://dx.doi.org/XXX)  
 
 -----
-</br>
+<br>
 
 ### Description:
 
@@ -29,7 +29,7 @@ Contains daily note entries during the experiment
 * **Nut_Ofav-Ssid_NoteBook.pdf:** Pdf document with *O. faveolata* and *S. siderea* notes (collection, maintenance, molecular work... )
 
 
-#### 1.Temperature:
+#### [1.Temperature](https://github.com/anampc/NutrientsHeat_Caribbean/blob/main/1.Temperature/Temperature.html):
 * Contains raw temperature data (Day_Tem.csv) and code (Temperature.Rmd) for **Figure 1**
 
 #### 2.Mortality:
