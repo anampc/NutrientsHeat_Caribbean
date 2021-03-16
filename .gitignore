@@ -33,3 +33,6 @@ vignettes/*.pdf
 **/*.eds
 **/*.xls
 **/*.xlsx
+
+# Google analytics
+myheader.html
