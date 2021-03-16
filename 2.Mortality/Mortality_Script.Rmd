@@ -3,9 +3,7 @@ title: "Coral survivorship under nutrients and heat stress"
 author: "Ana Palacio"
 date: "Nov 18, 2018"
 output:
-  pdf_document:
-    toc: yes
-  html_document:
+   html_document:
     df_print: paged
     fig_height: 7
     fig_width: 8
@@ -322,7 +320,7 @@ ggsave(file="Outputs/Survival.Treat.plot.svg", plot=Survival.Trat.plot, width=7.
 ```
 
 
-# Supplementary plots by colonies (Simbiont communities)
+# Supplementary plots by colonies (Symbiont communities)
 
 ```{r}
 SuplementatySurvivalA<-ggarrange(Genotype_only_OF$plot,Genotype_only_SS$plot,
