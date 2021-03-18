@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE, fig.width=7, fi
 
 # Default ggplot settings
 
-    Fill.colour<-scale_colour_manual(values = c("black", "gray70", "gray35"))
+    Fill.colour<-scale_colour_manual(values = c("#4A6CAA", "#469B53", "#AA4A74"))
 
     ggthe_bw<-theme(plot.background=element_blank(),
           panel.grid.major.y = element_blank(),
@@ -161,9 +161,9 @@ YII_Treat<- ggplot(YII.datab, aes (Days, YII, colour=Treatment)) +
 #YII_Treat + facet_grid (~Spp) + geom_smooth(span=0.5)
 
 All_SppFif<-YII_Treat + facet_wrap (Spp~Community) + geom_smooth(span=0.5)
-All_SppFif
+All_SppFif# + geom_point(size=0.1, alpha=0.3)
 
-#ggsave(file="Outputs/All_spp_YII_Treatb.svg", plot=All_SppFif, width=7, height=6)
+#ggsave(file="Outputs/Fig3.svg", plot=All_SppFif, width=7, height=6)
 
 ```
 
@@ -515,6 +515,7 @@ LME_Ofav1.1<-lmer(YII ~ Treatment * InitialCommunity + (1|Fragment),
                        (1|Genotype) + (1|Fragment) +(1|Replicate), 
                         data=YII.Ofav.C, na.action=na.omit)
       lmerTest::step (LME_Ofav) # Replicate is not significant
+      anova(LME_Ofav)
       ranova(LME_Ofav)
       
       LME_Ofav1.2<-lmer(YII ~ Treatment * DaysF * InitialCommunity + 
@@ -671,6 +672,7 @@ LME_Ssid1<-lmer(YII ~ Treatment * Days * InitialCommunity +
                        (1|Genotype) + (1|Fragment) +(1|Replicate), 
                         data=YII.Ssid.C, na.action=na.omit)
       lmerTest::step (LME_Ssid) # Replicate is not significant
+      anova(LME_Ssid)
       ranova(LME_Ssid)
       
       LME_Ssid1.2<-lmer(YII ~ Treatment * DaysF * InitialCommunity + 
