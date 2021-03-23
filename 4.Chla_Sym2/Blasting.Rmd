@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 # Default ggplot settings
 
-    Fill.colour<-scale_colour_manual(values = c("black", "gray70", "gray35"))
+    Fill.colour<-scale_colour_manual(values = c("#4A6CAA", "#469B53", "#AA4A74"))
 
     ggthe_bw<-theme(plot.background=element_blank(),
           panel.grid.major.y = element_blank(),
@@ -125,7 +125,7 @@ Sym_Treatment<- ggplot(data, aes (Days2, Sym.cm2, colour=Treatment,
   stat_summary(fun.y=mean, geom="point", size=2,
                position = position_dodge(width = 8)) + 
   scale_x_continuous(breaks=c(82, 113)) + Fill.colour +
-  scale_y_continuous(#limits = c(0, 2.4),
+  scale_y_continuous(#limits = c(0, 6.5),
                      breaks=seq(0, 6, by=0.5), 
    name="Symbiodiniaceae (106 cells / cm2)") 
   
@@ -134,7 +134,7 @@ Sym_CommunityB
 Sym_Community<-Sym_Treatment  +  facet_wrap (Spp~Community)
 Sym_Community
 
-# ggsave(file="Outputs/AllB_Acer_Ofav_Ssid_Blastateb.svg", Sym_CommunityB, width=6, height=5)
+# ggsave(file="Outputs/Fig_4c.svg", Sym_Community, width=6, height=5)
 
 
 Sy.Summary <- plyr::ddply (data, . (Spp, Treatment, Days, Community),
@@ -181,31 +181,31 @@ Chl.Summary
 
 * Chlorophyll-a/Symbiodiniaceae cell
 
-```{r}
-Chl_Sym<-ggplot(data, aes(DaysF, Chl.Sym, colour=Treatment)) +
-  #geom_jitter(aes(colour=factor(Treatment))) +
-  geom_boxplot()+ Fill.colour+
-  #stat_summary(fun.data = "mean_cl_boot",geom = "errorbar", width = 0.2, position = position_dodge(0.8))+
-  ggthe_bw + facet_grid(Spp~., scales = "free_y" )
-Chl_Sym
-
-Chl_Sym_Treatment<- ggplot(data, aes (Days,Chl.Sym, colour=Treatment,
-                                  shape=Treatment)) +
-  stat_summary(fun.data = "mean_cl_boot",geom = "errorbar", 
-               position = position_dodge(width = 3), width = 0.2 )+
-  stat_summary(fun.y=mean, geom="line", 
-               position = position_dodge(width = 3)) + 
-  stat_summary(fun.y=mean, geom="point", 
-               position = position_dodge(width = 3)) + ggthe_bw + ylab("Chlorophyll-a  / Symbiodiniaceae cell)") + 
-  scale_x_continuous(breaks=c(82, 113)) + Fill.colour +
-    facet_wrap (Spp~Community)
-Chl_Sym_Treatment
-
-Chl_Sym.Summary <- plyr::ddply (data, . (Spp, Treatment, Days),
-              summarise,
-              Chl_mean = mean (Chl_a, na.rm = T),
-              Chl_sd = sd (Chl_a, na.rm = T))
-Chl_Sym.Summary
+```{r, include=F}
+# Chl_Sym<-ggplot(data, aes(DaysF, Chl.Sym, colour=Treatment)) +
+#   #geom_jitter(aes(colour=factor(Treatment))) +
+#   geom_boxplot()+ Fill.colour+
+#   #stat_summary(fun.data = "mean_cl_boot",geom = "errorbar", width = 0.2, position = position_dodge(0.8))+
+#   ggthe_bw + facet_grid(Spp~., scales = "free_y" )
+# Chl_Sym
+# 
+# Chl_Sym_Treatment<- ggplot(data, aes (Days,Chl.Sym, colour=Treatment,
+#                                   shape=Treatment)) +
+#   stat_summary(fun.data = "mean_cl_boot",geom = "errorbar", 
+#                position = position_dodge(width = 3), width = 0.2 )+
+#   stat_summary(fun.y=mean, geom="line", 
+#                position = position_dodge(width = 3)) + 
+#   stat_summary(fun.y=mean, geom="point", 
+#                position = position_dodge(width = 3)) + ggthe_bw + ylab("Chlorophyll-a  / Symbiodiniaceae cell)") + 
+#   scale_x_continuous(breaks=c(82, 113)) + Fill.colour +
+#     facet_wrap (Spp~Community)
+# Chl_Sym_Treatment
+# 
+# Chl_Sym.Summary <- plyr::ddply (data, . (Spp, Treatment, Days),
+#               summarise,
+#               Chl_mean = mean (Chl_a, na.rm = T),
+#               Chl_sd = sd (Chl_a, na.rm = T))
+# Chl_Sym.Summary
 
 ```
 
@@ -237,7 +237,6 @@ Chl_Sym.Summary
   
   shapiro.test(data$lnSym)# Better, but still not Normal
   ggplot() + geom_histogram(aes(x=lnSym), data=data)
-  
   
   shapiro.test(data$Chl.sq)# Normal
   ggplot() + geom_histogram(aes(x=Chl.sq), data=data)
@@ -367,7 +366,7 @@ summary(Acer.data)
 
 ```
 
-Use raw Symbiodiniaceae/ cm2 data in models?
+Use raw Symbiodiniaceae/ cm2 data in A.cer models
 
 * Chl-a / cm2  
 
@@ -455,22 +454,22 @@ LMER_Sym_Acer<-lmer(Sym.cm2 ~ Treatment * DaysF +
     ranova(LMER_Sym_Acer)
     step(LMER_Sym_Acer)
 
-LMER_Sym_Acer2<-lmer(Sym.cm2 ~ Treatment * DaysF + 
-                 (1|Genotype), data=Acer.data, na.action = na.omit)
-    anova(LMER_Sym_Acer2)
-    ranova(LMER_Sym_Acer2)
-    step(LMER_Sym_Acer2)
+# LMER_Sym_Acer2<-lmer(Sym.cm2 ~ Treatment * DaysF + 
+#                  (1|Genotype), data=Acer.data, na.action = na.omit)
+#     anova(LMER_Sym_Acer2)
+#     ranova(LMER_Sym_Acer2)
+#     step(LMER_Sym_Acer2)
     
-LMER_Sym_Acer3<-lm(Sym.cm2 ~ Treatment * DaysF,
-                 data=Acer.data,  na.action = na.omit)
-    anova(LMER_Sym_Acer3)
-    step(LMER_Sym_Acer3)
-    summary(LMER_Sym_Acer3)
+# LMER_Sym_Acer3<-lm(Sym.cm2 ~ Treatment * DaysF,
+#                  data=Acer.data,  na.action = na.omit)
+#     anova(LMER_Sym_Acer3)
+#     step(LMER_Sym_Acer3)
+#     summary(LMER_Sym_Acer3)
 ```
 
 ```{r}
 # Multicomp
-    Acer.Sym.emm<-emmeans(LMER_Sym_Acer3, ~Treatment | DaysF)
+    Acer.Sym.emm<-emmeans(LMER_Sym_Acer, ~Treatment | DaysF)
      contrast(Acer.Sym.emm, "tukey")
     Acer.Sym.Group<-cld(Acer.Sym.emm, by=NULL) # compact-letter display
     
@@ -494,17 +493,18 @@ LMER_Chla_Acer<-lmer(Chl_a ~ Treatment * DaysF +
     ranova(LMER_Chla_Acer)
     #step(LMER_Chla_Acer)
 
-LMER_Chla_Acer3<-lm(Chl_a ~ DaysF * Treatment, data=Acer.data)
-    anova(LMER_Chla_Acer3)
-    #ranova(LMER_Chla_Acer3)
-    step(LMER_Chla_Acer3)
-    summary(LMER_Chla_Acer3)
-# Nutrient treatment is not significant, temperature treatment is. However, data is not balanced (there is not N_Day113 data). Evaluate Day82 alone for nutrient effect?
+# LMER_Chla_Acer3<-lm(Chl_a ~ DaysF * Treatment, data=Acer.data)
+#     anova(LMER_Chla_Acer3)
+#     #ranova(LMER_Chla_Acer3)
+#     step(LMER_Chla_Acer3)
+#     summary(LMER_Chla_Acer3)
+    
+# Nutrient treatment alone is not significant, temperature treatment is. However, data is not balanced (there is not N_Day113 data and only one NP). Evaluate Day82 alone for nutrient effect?
 ```
 
 ```{r}
 # Multicomp
-    Acer.Chla.emm<-emmeans(LMER_Chla_Acer3, ~Treatment | DaysF)
+    Acer.Chla.emm<-emmeans(LMER_Chla_Acer, ~Treatment | DaysF)
     contrast(Acer.Chla.emm, "tukey")
     contrast(Acer.Chla.emm,by=c("Treatment"),method='pairwise')
     #pairs(Acer.Chla.emm)
@@ -525,6 +525,24 @@ LMER_Chla_Acer3<-lm(Chl_a ~ DaysF * Treatment, data=Acer.data)
 Acer.nutrients<-subset(Acer.data, DaysF=="82")
 Acer.nutrients<-droplevels(Acer.nutrients)
 summary(Acer.nutrients)
+
+LMER_Chla_Acer<-lmer(Chl_a ~ Treatment + 
+                 (1|Rep) + (1|Genotype), data=Acer.data)
+    anova(LMER_Chla_Acer)
+    ranova(LMER_Chla_Acer)
+    
+    # Multicomp
+    Acer.Chla.emm<-emmeans(LMER_Chla_Acer, ~Treatment)
+    contrast(Acer.Chla.emm, "tukey")
+    contrast(Acer.Chla.emm,by=c("Treatment"),method='pairwise')
+    #pairs(Acer.Chla.emm)
+    pwpp(Acer.Chla.emm)
+    
+    Acer.Chla.Groups<-cld(Acer.Chla.emm, by=NULL) # compact-letter display
+    Acer.Chla.Groups<-Acer.Chla.Groups[order(
+          Acer.Chla.Groups$Treatment),]
+    Acer.Chla.Groups
+
 ```
 
 * Data summary 
@@ -770,24 +788,24 @@ Use Zoox.sq in models
 
 ```{r}
 # Sym
-LMER_Sym_Ofav<-lmer(Zoox.sq ~ Treatment * DaysF * Community + 
+LMER_Sym_Ofav<-lmer(Sym.cm2 ~ Treatment * DaysF * Community + 
                  (1|Rep) + (1|Genotype), data=Ofav.data, 
                  na.action = na.omit)
     anova(LMER_Sym_Ofav)
     ranova(LMER_Sym_Ofav)
     step(LMER_Sym_Ofav)
 
-LMER_Sym_Ofav2<-lmer(Zoox.sq ~ Treatment * DaysF + 
-                 (1|Genotype), data=Ofav.data, na.action = na.omit)
-    anova(LMER_Sym_Ofav2)
-    ranova(LMER_Sym_Ofav2)
-    step(LMER_Sym_Ofav2)
-    
-LMER_Sym_Ofav3<-lm(Zoox.sq ~ Treatment * DaysF,
-                 data=Ofav.data,  na.action = na.omit)
-    anova(LMER_Sym_Ofav3)
-    step(LMER_Sym_Ofav3)
-    summary(LMER_Sym_Ofav3)
+ LMER_Sym_Ofav2<-lmer(Sym.cm2 ~ Treatment * DaysF + 
+                  (1|Genotype), data=Ofav.data, na.action = na.omit)
+     anova(LMER_Sym_Ofav2)
+     ranova(LMER_Sym_Ofav2)
+     step(LMER_Sym_Ofav2)
+#     
+# LMER_Sym_Ofav3<-lm(Zoox.sq ~ Treatment * DaysF,
+#                  data=Ofav.data,  na.action = na.omit)
+#     anova(LMER_Sym_Ofav3)
+#     step(LMER_Sym_Ofav3)
+#     summary(LMER_Sym_Ofav3)
 ```
 
 ```{r}
@@ -1113,7 +1131,7 @@ LMER_Sym_Ssid3<-lmer(Zoox.sq ~ Treatment + DaysF +
 # Chl-a
     
 LMER_Chla_Ssid<-lmer(Chl_a ~ Treatment * DaysF * Community + 
-                       # (1|Rep) + 
+                       (1|Rep) + 
                        (1|Genotype), data=Ssid.data)
     anova(LMER_Chla_Ssid)
     ranova(LMER_Chla_Ssid)
