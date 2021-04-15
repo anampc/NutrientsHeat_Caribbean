@@ -1094,15 +1094,16 @@ LMER_Sym_Ssid<-lmer(Zoox.sq ~ Treatment * DaysF * Community +
     ranova(LMER_Sym_Ssid)
     step(LMER_Sym_Ssid)
 
-LMER_Sym_Ssid2<-lmer(Sym.cm2 ~ Treatment + DaysF + Community +
-                       (1 | Genotype) + DaysF:Community,
-                     data=Ssid.data, na.action = na.omit)
-    anova(LMER_Sym_Ssid2)
-    ranova(LMER_Sym_Ssid2)
-    #step(LMER_Sym_Ssid2)
+# LMER_Sym_Ssid2<-lmer(Sym.cm2 ~ Treatment + DaysF + Community +
+#                        (1 | Genotype) + DaysF:Community,
+#                      data=Ssid.data, na.action = na.omit)
+#     anova(LMER_Sym_Ssid2)
+#     ranova(LMER_Sym_Ssid2)
+#     #step(LMER_Sym_Ssid2)
     
 LMER_Sym_Ssid3<-lmer(Zoox.sq ~ Treatment + DaysF +
-                       (1 | Genotype) + DaysF:Community,
+                     (1 | Genotype) +   (1|Rep) +
+                     DaysF:Community,
                      data=Ssid.data, na.action = na.omit)
     anova(LMER_Sym_Ssid3)
     ranova(LMER_Sym_Ssid3)
@@ -1112,7 +1113,7 @@ LMER_Sym_Ssid3<-lmer(Zoox.sq ~ Treatment + DaysF +
 
 ```{r}
 # Multicomp
-    Ssid.Sym.emm<-emmeans(LMER_Sym_Ssid3, ~Community | Treatment|DaysF)
+    Ssid.Sym.emm<-emmeans(LMER_Sym_Ssid3, ~Community |DaysF)
     #Ssid.Sym.emm<-emmeans(LMER_Sym_Ssid3, ~Treatment | Community | DaysF)
       contrast(Ssid.Sym.emm, "tukey")
     Ssid.Sym.Group<-cld(Ssid.Sym.emm, by=NULL) # compact-letter display
@@ -1147,26 +1148,26 @@ LMER_Chla_Ssid2<-lmer(Chl_a ~ Treatment + DaysF + Community + (1 |Genotype) +
 
 ```{r}
 # Multicomp
-  Ssid.Chla.emm<-emmeans(LMER_Chla_Ssid2, ~Treatment|Community|DaysF)
+  Ssid.Chla.emm<-emmeans(LMER_Chla_Ssid2, ~Treatment|DaysF)
     contrast(Ssid.Chla.emm, "tukey")
     pwpp(Ssid.Chla.emm)
     
-  Ssid.Chla.emm<-emmeans(LMER_Chla_Ssid2, ~Community|Treatment|DaysF)
+  Ssid.Chla.emm<-emmeans(LMER_Chla_Ssid2, ~Community|DaysF)
     contrast(Ssid.Chla.emm, "tukey")
     pwpp(Ssid.Chla.emm)
   
     Ssid.Chla.Groups<-cld(Ssid.Chla.emm, by=NULL) # compact-letter display
-    Ssid.Chla.Groups<-Ssid.Chla.Groups[order(
-          Ssid.Chla.Groups$DaysF,
-          Ssid.Chla.Groups$Treatment,
-          Ssid.Chla.Groups$Community),]
+    #Ssid.Chla.Groups<-Ssid.Chla.Groups[order(
+    #      Ssid.Chla.Groups$DaysF,
+    #      Ssid.Chla.Groups$Treatment,
+    #      Ssid.Chla.Groups$Community),]
     Ssid.Chla.Groups
     
     Ssid.Chla.Groups<-Ssid.Chla.Groups[order(
           Ssid.Chla.Groups$DaysF,
           Ssid.Chla.Groups$Community),]
     Ssid.Chla.Groups
-  #write.csv(Ssid.Chla.Groups, "Outputs/Multicomp_SsidChla_clade.csv", row.names = F)
+  #write.csv(Ssid.Chla.Groups, "Outputs/Multicomp_SsidChla_clade3.csv", row.names = F)
     
 ```
 
